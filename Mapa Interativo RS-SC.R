@@ -1,13 +1,3 @@
-''' CRIANDO MAPAS COM R - TMAPS
-
-PARA CRIAR OS MAPAS SÃO NECESSÁRIOS ALGUNS ITENS:
-
-1) BASE DE DADOS COM VALORES DE INTERPOLAÇÃO - ALGUM CÓDIGO PARA UNIFICAR A BASE COM OUTRA
-2) SHAPEFILE DE ONDE QUER PLOTAR OS DADOS - MALHA CARTOGRAFICA
-
-OBS1.: OS CÓDIGOS DO ITEM 1 PODEM SER ARBITRARIOS OU NÃO - NO CASO DO BRASIL TEM OS CÓDIGOS IBGE
-OBS2.: É POSSÍVEL CRIAR MALHA CARTOGRÁFICA COM O QGIS OU ARCGIS
-'''
 #PACOTES
 library(readxl)
 library(sf)
@@ -28,7 +18,7 @@ mymap <- geobr::read_municipality(code_muni = c("RS", "SC"), year = 2020, showPr
 #PROCESSAMENTO
 capag1 <- capag
 capag1$Endividamento <- round(capag1$Endividamento_pib, digits = 4)
-capag1$Poupança <- round(capag1$Poupança_Corrente, digits = 4)
+capag1$PoupanÃ§a <- round(capag1$PoupanÃ§a_Corrente, digits = 4)
 capag1$Liquidez <- round(capag1$Liquidez, digits = 4)
 capag1 <- capag1[,-c(2,3,4,5,6,7,8,10,11,12)]
 
@@ -48,14 +38,14 @@ mapa_and_data <- inner_join(mymap,capag, by = "code_muni")
 mapa_and_data <- st_as_sf(mapa_and_data) #Transforamdo em 'formato especial'
 tmap_mode("view")
 
-#SAÍDA
+#SAÃDA
 tm_shape(mapa_and_data) +
   tm_basemap(leaflet::providers$OpenStreetMap) +
   tm_fill("Nota_CAPAG", id = "name_muni", palette = "viridis", 
           popup.vars = c(
-            "População", 
+            "PopulaÃ§Ã£o", 
             "Endividamento%pib", 
-            "Poupança_Corrente", 
+            "PoupanÃ§a_Corrente", 
             "Liquidez", 
             "Nota_CAPAG"), 
           alpha = 0.4) + tm_borders() + tm_scale_bar()
